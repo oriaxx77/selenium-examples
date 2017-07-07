@@ -1,0 +1,38 @@
+group 'com.oriaxx77'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url 'http://central.maven.org/maven2/' }
+    maven { url 'https://oss.sonatype.org/content/repositories/releases/' }
+    maven { url 'https://artifacts.alfresco.com/nexus/content/repositories/public/' }
+}
+
+ext {
+    springVersion = '5.0.0.M5'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '3.4.0'
+    testCompile group: 'org.seleniumhq.selenium.fluent', name: 'fluent-selenium', version: '1.18'
+    testCompile group: 'org.springframework', name: 'spring-core', version: "${springVersion}"
+    testCompile group: 'org.springframework', name: 'spring-test', version: "${springVersion}"
+    testCompile group: 'org.springframework', name: 'spring-context', version: "${springVersion}"
+    compile group: 'com.codeborne', name: 'phantomjsdriver', version: '1.4.3'
+}
+
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+    afterTest { desc, result ->
+        println "Executing test ${desc.name} [${desc.className}] with result: ${result.resultType}"
+    }
+}
