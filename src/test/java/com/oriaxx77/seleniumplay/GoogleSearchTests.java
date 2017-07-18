@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.concurrent.TimeUnit;
 
 
-
 @ContextConfiguration(classes = {GoogleTestsConfig.class})
 @ActiveProfiles( {"chrome"} )
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -27,7 +26,7 @@ public class GoogleSearchTests
 
     @Autowired
     private WebDriver driver;
-    private FluentWebDriver fluentWebDriver;
+
     @Autowired
     private GoogleAccess googleAccess;
 
@@ -37,25 +36,15 @@ public class GoogleSearchTests
     {
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get( googleAccess.getUrl() );
-        fluentWebDriver = new FluentWebDriver( driver );
     }
 
     @Test
     public void testSearch()
     {
-        fluentWebDriver.input( By.name("q") ).sendKeys( googleAccess.getSearch() ).submit() ;
-
-        (new WebDriverWait(driver, 10))
-                .until(ExpectedConditions.presenceOfElementLocated(By.id("resultStats")));
-
-        long actualResultCount = driver.findElements(By.xpath("//*[@id='rso']//h3/a")).stream()
-                .map( webElement -> webElement.getAttribute( "href") ).count();
-
-        long expectedResultCount = 12;
-
-        Assert.assertEquals( expectedResultCount, actualResultCount );
-
-
+        new GoogleSearchPage( driver ){{
+            submitQuery( googleAccess.getSearch() );
+            Assert.assertEquals( 11, getSearchResult().size() );
+        }};
     }
 
 
