@@ -15,6 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 
@@ -41,12 +42,18 @@ public class GoogleSearchTests
     @Test
     public void testSearch()
     {
-        new GoogleSearchPage( driver ){{
-            submitQuery( googleAccess.getSearch() );
-            Assert.assertEquals( 11, getSearchResult().size() );
-        }};
+        List<?> resultItems = new GoogleSearchPage( driver )
+            .submitQuery(googleAccess.getSearch())
+            .getSearchResult();
+        Assert.assertEquals( 11, resultItems.size() );
     }
 
+    @Test
+    public void testAdvertising()
+    {
+        GoogleAdvertisingPage advertisingPage = new GoogleSearchPage( driver )
+            .clickAdvertising();
+    }
 
     @After
     public void quitDriver() throws Exception
