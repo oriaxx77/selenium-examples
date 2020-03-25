@@ -36,8 +36,7 @@ public class GoogleSearchPage extends BasePage
                 .until(ExpectedConditions.presenceOfElementLocated(By.id(bottomLinkSectionId)));
 
         WebElement links = delegate.findElement(By.id(bottomLinkSectionId));
-        System.out.println( "Help text: " + links.findElements(By.tagName("a")).get(0).getText());
-
+        links.findElements(By.tagName("a")).get(0).click();
         new IO(() ->{new WebDriverWait(delegate, 10).wait();});
         return new GoogleAdvertisingPage(this.delegate);
     }
