@@ -40,16 +40,17 @@ public class GoogleSearchTests
     }
 
     @Test
-    public void testSearch()
+    public void testSearch_withImdbStarWars_expect10resultitems()
     {
         List<?> resultItems = new GoogleSearchPage( driver )
-            .submitQuery(googleAccess.getSearch())
-            .getSearchResult();
+                            .submitQuery("Imdb Star Wars")
+                            .getSearchResult();
         Assert.assertEquals( 11, resultItems.size() );
     }
 
+
     @Test
-    public void testAdvertising()
+    public void testAdvertising_withClick_expectNavigationToAddsPage()
     {
         GoogleAdvertisingPage advertisingPage = new GoogleSearchPage( driver )
             .clickAdvertising();
